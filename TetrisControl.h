@@ -11,6 +11,7 @@ class TetrisControl {
 private:
 	Player* plr[5];
 	int** map;
+	int k;
 	int pnum;
 	int score;
 	int c = 0;
@@ -19,9 +20,10 @@ public:
 	void SetPlayer(Player* p);
 	void InitMap();
 	void UpdateMap();
-	void DeleteLine();
+	bool DeleteLine();
 	void ShowMap();
 	void ShowLose();
+	int GetK();
 	int GetC();
 	int GetScore();
 	~TetrisControl();

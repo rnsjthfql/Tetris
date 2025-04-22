@@ -2,6 +2,7 @@
 
 TetrisControl::TetrisControl()
 {
+	k = 0;
 	score = 0;
 	pnum = 0;
 	map = new int*[ROW];
@@ -58,27 +59,21 @@ void TetrisControl::UpdateMap()
 	}
 }
 
-void TetrisControl::DeleteLine()
+bool TetrisControl::DeleteLine()
 {
-	int i = 0;
-	for (i = 1; i < ROW-1; i++) {
-		int n = 0;
-		for (int j = 1; j < COL-1; j++) {
+	int n = 0;
+	for (int i = ROW-2; i >= 1; i--) {
+		n = 0;
+		for (int j = COL-2; j >= 1 ; j--) {
 			if (map[i][j] == 2)
-				n++;
-			if (n == COL - 2) {
-				for (i; i < ROW - 1; i++) {
-					for (int j = 1; j < COL - 1; j++) {
-						map[++i][j] = map[i][j];
-						map[1][j] = 0;
-					}
-				}
-				score += 10;
+				n += 1;
+			if (n == COL-2) {
+				k = i;
+				return true;
 			}
 		}
 	}
-
-	
+	return false;
 }
 
 void TetrisControl::ShowMap()
@@ -107,6 +102,11 @@ void TetrisControl::ShowLose()
 			break;
 		}
 	}
+}
+
+int TetrisControl::GetK()
+{
+	return k;
 }
 
 int TetrisControl::GetC()

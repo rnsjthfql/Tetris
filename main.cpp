@@ -13,6 +13,7 @@ using namespace std;
 #define DOWN 80
 #define LEFT 75
 #define RIGHT 77
+#define ESC 27
 #define ROW 25
 #define COL 15
 
@@ -46,6 +47,15 @@ int main() {
 
 	tc.InitMap();
 	//tc.ShowMap();
+	
+	for (int j = 1; j < COL - 1; j++) {
+		if (j == 7) {
+			tc[ROW-2][j] = 0;
+		}
+		else
+			tc[ROW - 2][j] = 2;
+	}
+	
 
 	int key = 0, x = 7, y = 1;
 	Block b = Block();
@@ -62,7 +72,7 @@ int main() {
 	while (1) {
 		gotoxy(0, 0);
 		cursor(0);
-		tc.DeleteLine();
+		
 		tc.ShowMap();
 		tc.UpdateMap();
 		tc.ShowLose();
@@ -72,6 +82,15 @@ int main() {
 		}
 
 
+		if (tc.DeleteLine() == true) {
+			for (int i = tc.GetK(); i >= 1; i--) {
+				for (int j = 1; j < COL - 1; j++) {
+					tc[i][j] = tc[i - 1][j];
+					tc[1][j] = 0;
+				}
+			}
+			score += 10;
+		}
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -116,7 +135,7 @@ int main() {
 					block[i][j] = 2;
 					tc[i + y][j + x] = 2;
 				}
-				if (block[i][j] == 1 && tc[i + y + 1][j + x] == 2) {
+				if (i+y+1 < ROW-1 && block[i][j] == 1 && tc[i + y + 1][j + x] == 2) {
 					if (j >= 1 && block[i][j - 1] == 1 && tc[i + y + 1][j + x - 1] != 2) {
 						if (j == 2 && block[i][j - 2] == 1 && tc[i + y + 1][j + x - 1] != 2) {
 							block[i][j - 2] = 2;
@@ -161,6 +180,7 @@ int main() {
 				if (block[i][j] == 2) {
 					tc[i + y][j + x] = 2;
 				}
+
 			}
 		}
 
@@ -267,10 +287,21 @@ int main() {
 					if (block[i][j] == 2) {
 						tc[i + y][j + x] = 2;
 					}
+					
 				}
 			}
-
 		}
+
+		gotoxy(35, 10);
+		cout << "↑: 블록 회전" << endl;
+		gotoxy(35, 11);
+		cout << "↓: 블록 아래로 이동" << endl;
+		gotoxy(35, 12);
+		cout << "→: 블록 오른쪽으로 이동" << endl;
+		gotoxy(35, 13);
+		cout << "←: 블록 왼쪽으로 이동" << endl;
+		gotoxy(35, 14);
+		cout << "ESC: 게임 종료" << endl;
 
 		Sleep(300);
 
@@ -297,10 +328,6 @@ int main() {
 					}
 				}
 				tc.UpdateMap();
-
-				gotoxy(35, 10);
-				std::cout << rot << endl;
-
 
 			}
 			else if (key == DOWN) {
@@ -334,12 +361,13 @@ int main() {
 					}
 				}
 
+				
 				--x;
 				if (x < 1)
 					x = 1;
 				
 				gotoxy(x, y);
-
+				
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 3; j++) {
 						if(block[i][j]==1)
@@ -375,13 +403,17 @@ int main() {
 				}
 				tc.UpdateMap();
 			}
+			else if (key == ESC) {
+				gotoxy(0, 26);
+				cout << "게임을 종료합니다." << endl;
+				return 0;
+			}
 
 		}
 
 		//점수 출력
 		gotoxy(0, 25);
 		std::cout << "Score: " << score << endl;
-
 
 	}
 
