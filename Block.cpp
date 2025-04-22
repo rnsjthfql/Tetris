@@ -57,6 +57,7 @@ Block::~Block()
 		for (int j = 0; j < 5; j++) {
 			delete[] block[i][j];
 		}
+		delete[] block[i];
 	}
 	delete[] block;
 }
