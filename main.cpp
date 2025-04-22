@@ -46,15 +46,6 @@ int main() {
 
 
 	tc.InitMap();
-	//tc.ShowMap();
-	
-	for (int j = 1; j < COL - 1; j++) {
-		if (j == 7) {
-			tc[ROW-2][j] = 0;
-		}
-		else
-			tc[ROW - 2][j] = 2;
-	}
 	
 
 	int key = 0, x = 7, y = 1;
